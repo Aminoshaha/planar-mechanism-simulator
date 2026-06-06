@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>平面机构类型判别与运动仿真器</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <div>
+      <p class="eyebrow">MECHANISM LAB · 教学仿真工具</p>
+      <h1>平面机构类型判别与运动仿真器</h1>
+      <p class="subtitle">输入杆长，观察机构判别、运动轨迹、传动角与急回特性。</p>
+    </div>
+    <div class="hero-badge"><span id="runDot"></span><strong id="runState">等待判别</strong></div>
+  </header>
+
+  <nav class="tab-bar">
+    <button class="tab active" data-page="fourbar">平面铰链四杆机构</button>
+    <button class="tab" data-page="slider">平面曲柄滑块机构</button>
+    <button class="tab" data-page="guide">平面曲柄导杆机构</button>
+    <button class="tab" data-page="instructions">说明</button>
+  </nav>
+
+  <section id="page-fourbar" class="page active">
+  <main class="layout">
+    <aside class="panel controls">
+      <div class="panel-title"><span>01</span><div><h2>输入与控制</h2><p>长度单位：mm</p></div></div>
+
+      <section class="control-section">
+        <h3>四杆长度</h3>
+        <div class="length-grid">
+          <label>l₁ · AB<input id="l0" type="number" min="0.01" step="1" value="40"></label>
+          <label>l₂ · BC<input id="l1" type="number" min="0.01" step="1" value="100"></label>
+          <label>l₃ · CD<input id="l2" type="number" min="0.01" step="1" value="80"></label>
+          <label>l₄ · AD<input id="l3" type="number" min="0.01" step="1" value="110"></label>
+        </div>
+      </section>
+
+      <section class="control-section">
+        <h3>机构配置</h3>
+        <label>机架
+          <select id="ground"><option value="0">AB</option><option value="1">BC</option><option value="2">CD</option><option value="3" selected>AD</option></select>
+        </label>
+        <label>原动件
+          <select id="inputLink"><option value="0" selected>AB</option><option value="1">BC</option><option value="2">CD</option><option value="3">AD</option></select>
+        </label>
+        <div class="two-cols">
+          <label>角速度 ω · rad/s<input id="omega" type="number" min="0.01" step="0.1" value="1"></label>
+          <label>转动方向<select id="direction"><option value="1">逆时针</option><option value="-1">顺时针</option></select></label>
+        </div>
+        <div class="two-cols">
+          <label>比例尺 μ · m/mm<input id="scale" type="number" min="0.0001" step="0.001" value="0.01"></label>
+          <label>装配模式<select id="assembly"><option value="open">开式</option><option value="crossed">交叉式</option></select></label>
+        </div>
+      </section>
+
+      <section class="control-section">
+        <div class="button-grid primary-actions">
+          <button id="judge" class="primary">判别并计算</button>
+          <button id="start">开始</button>
+          <button id="pause">暂停</button>
+          <button id="reset">重置</button>
+        </div>
+      </section>
+
+      <section class="control-section targets">
+        <h3>运动到特征位置</h3>
+        <button id="limit1">摇杆极限位置 1</button>
+        <button id="limit2">摇杆极限位置 2</button>
+        <button id="gammaMax">最大传动角 / 最小压力角</button>
+        <button id="gammaMin">最小传动角 / 最大压力角</button>
+      </section>
+
+      <div id="message" class="message info" role="status">修改参数后，点击“判别并计算”。</div>
+      <div class="legend">
+        <span><i class="ground"></i>机架</span><span><i class="driver"></i>原动件</span><span><i class="link"></i>其他杆件</span>
+      </div>
+    </aside>
+
+    <section class="workspace">
+      <div class="panel metrics">
+        <div class="panel-title compact"><span>02</span><div><h2>判别与指标</h2><p id="classification">尚未计算</p></div></div>
+        <div class="metric-grid">
+          <article class="metric emphasis"><small>当前输入角</small><strong id="angleNow">—</strong><span>φ</span></article>
+          <article class="metric emphasis"><small>当前传动角</small><strong id="gammaNow">—</strong><span>γ</span></article>
+          <article class="metric"><small>当前压力角</small><strong id="alphaNow">—</strong><span>α</span></article>
+          <article class="metric"><small>行程速比系数</small><strong id="quickRatio">—</strong><span>K</span></article>
+          <article class="metric"><small>极位夹角</small><strong id="theta">—</strong><span>θ</span></article>
+          <article class="metric"><small>传动角范围</small><strong id="gammaRange">—</strong><span>γmin — γmax</span></article>
+          <article class="metric"><small>压力角范围</small><strong id="alphaRange">—</strong><span>αmin — αmax</span></article>
+          <article class="metric"><small>可达范围</small><strong id="coverage">—</strong><span>扫描覆盖率</span></article>
+        </div>
+      </div>
+
+      <div class="panel canvas-panel">
+        <div class="canvas-head">
+          <div><span class="section-number">03</span><h2>运动仿真</h2></div>
+          <div class="canvas-readout"><span id="assemblyReadout">开式</span><span id="scaleReadout">μ = 0.010 m/mm</span></div>
+        </div>
+        <div class="canvas-wrap">
+          <canvas id="canvas"></canvas>
+          <div class="feature-toggles">
+            <strong>特征位置轮廓</strong>
+            <label><input id="showLimit1" type="checkbox" checked><span>极限位置 1</span></label>
+            <label><input id="showLimit2" type="checkbox" checked><span>极限位置 2</span></label>
+            <label><input id="showGammaMax" type="checkbox" checked><span>最大传动角 / 最小压力角</span></label>
+            <label><input id="showGammaMin" type="checkbox" checked><span>最小传动角 / 最大压力角</span></label>
+          </div>
+          <div class="canvas-note">虚线：特征位置 · 淡线：铰链轨迹</div>
+        </div>
+      </div>
+    </section>
+  </main>
+  </section>
+  <section id="page-slider" class="page"></section>
+  <section id="page-guide" class="page"></section>
+  <section id="page-instructions" class="page"></section>
+  <script src="main.js"></script>
+  <script src="modules.js"></script>
+</body>
+</html>
