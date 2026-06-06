@@ -56,7 +56,7 @@ function mechanismPage(kind) {
 
 mid("page-slider").innerHTML = mechanismPage("sc");
 mid("page-guide").innerHTML = mechanismPage("cg");
-mid("page-instructions").innerHTML = `<main class="instructions-page"><div class="instructions-head"><span>04</span><div><h2>说明</h2><p>LIC/TasPalivia/woChovy</p></div></div><div class="instructions-grid"><article><h3>一、项目简介</h3><p>这是一个简单的VibeCoding项目，灵感来源于今天复习了一天的机械原理第八章连杆机构及其设计</p></article><article><h3>二、使用方法</h3><p>这里点点那里点点就行，只要你觉得有哪些题目做不明白，或者说想看看它到底运动了个啥，你就可以用这个程序实时观察机构的运动情况。使用时要注意，文件夹内四个文件要同时存放："index.html", "style.css", "main.js", "modules.js"。README.md的话无所谓</p></article><article><h3>三、机构判别规则</h3><p>四杆机构一共是两个判别规则，第一个是杆长条件，第二个是封闭条件，满足前者+后者或只满足后者就会进入对应的机架判断；。</p></article><article><h3>四、参数说明</h3><p>这里预留参数说明内容，后续手动编辑。</p></article><article><h3>五、注意事项</h3><p>这里预留注意事项内容，后续手动编辑。</p></article></div></main>`;
+mid("page-instructions").innerHTML = `<main class="instructions-page"><div class="instructions-head"><span>04</span><div><h2>说明</h2><p>LIC/TasPalivia/woChovy</p></div></div><div class="instructions-grid"><article><h3>一、项目简介</h3><p>这是一个简单的VibeCoding项目，灵感来源于今天复习了一天的机械原理第八章连杆机构及其设计</p></article><article><h3>二、使用方法</h3><p>这里点点那里点点就行，只要你觉得有哪些题目做不明白，或者说想看看它到底运动了个啥，你就可以用这个程序实时观察机构的运动情况。使用时要注意，文件夹内四个文件要同时存放："index.html", "style.css", "main.js", "modules.js"。README.md的话无所谓</p></article><article><h3>三、机构判别规则</h3><p>四杆机构一共是两个判别规则，第一个是杆长条件，第二个是封闭条件，满足前者+后者或只满足后者就会进入对应的机架判断；。</p></article><article><h3>四、参数说明</h3><p>本来可以设置比例尺查看的，但是后面添加了鼠标中键滑动缩放的功能，导致这个参数成了一个左脑肘击右脑的逆天操作，所以说，这个比例尺看看感受一下吧，后面会改的</p></article><article><h3>五、注意事项</h3><p>没啥注意事项，如果好用的话麻烦点个Star谢谢喵！</p></article></div></main>`;
 
 function makeView(canvas, draw) {
   const view = { zoom: 1, x: 0, y: 0, pan: null };
